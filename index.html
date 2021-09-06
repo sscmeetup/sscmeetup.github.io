@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ACX Meetups</title>
+</head>
+<body>
+<div class="big">
+<h1 class="title_txt">ACX Meetup</h1>
+<p> Below is a list of video chat rooms. Please leave this page open so you can move between rooms. 
+If you move to another room, make sure to close the tab of your original room.</p>
+<p>All links will open in a new tab.</p>
+<div id="test"></div>
+</div>
+</body>
+</html>
+<style>
+
+.title_txt{
+	text-align: center;
+}
+body {
+text-align: center;
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+
+}
+
+</style>
+<script>
+
+const cyrb53 = function(str, seed = 0) {
+    let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+    for (let i = 0, ch; i < str.length; i++) {
+        ch = str.charCodeAt(i);
+        h1 = Math.imul(h1 ^ ch, 2654435761);
+        h2 = Math.imul(h2 ^ ch, 1597334677);
+    }
+    h1 = Math.imul(h1 ^ (h1>>>16), 2246822507) ^ Math.imul(h2 ^ (h2>>>13), 3266489909);
+    h2 = Math.imul(h2 ^ (h2>>>16), 2246822507) ^ Math.imul(h1 ^ (h1>>>13), 3266489909);
+    return 4294967296 * (2097151 & h2) + (h1>>>0);
+};
+function GetDate(){
+	let today = new Date();
+	let date = today.getUTCFullYear() + "-" + today.getUTCMonth() + "-" +  today.getUTCDate();
+	return date
+
+}
+
+function BorgesNames(num_names){
+	date = GetDate()
+	let borges_array = 
+			[
+				"the mermaids",
+				"those included in this classification",
+				"those that tremble as if they were mad",
+				"the innumerable ones",
+				"those drawn with a very fine camel hair brush",
+				"those that have just broken the vase",
+				"those that from afar look like flies",
+				"Moloch’s rebellious children",
+				"those who have achieved Samsara.",
+				"those who would take the orange pill",
+				"those who think the scissor statement is true",
+				"those who think the scissor statement is false",
+				"those who seek Reedspacer's Lower Bound",
+				"those who seek the philosopher's stone",
+				"those who think Scott Alexander is the rightful caliph",
+				"those who think Gwern is the rightful caliph",
+				"those who think Eliezer Yudkowsky is the rightful caliph",
+				"those who can tolerate anything except their outgroup",
+				"those who speak in whale metaphors",
+				"worshipers of the lecherous crab god",
+				"the men of one study ",
+				"intellectual hipsters and meta-contrarians",
+				"those in the control group which is out of control",
+				"those who know how deep the rabbit hole goes",
+				"those that dream of a vast archipelago",
+				'those who defect only against copies of themself',
+				'those who defect only when the moon is full',
+				'those who think Roger Penrose is a hypercomputer',
+				'the ghosts in the quantum Turing machine',
+				'those that are less intelligent John von Neumann',
+				'those that know which watch Omega wears.',
+				'those who think Gwern is a brain emulation',
+				'those who are certainly not Satoshi Nakamoto',
+				'those well studied in anglophysics.',
+				'those unfortunate souls who find Tom Swifties amusing.',
+				'those who mingle with geese',
+				'those who know how many synapses are in the brain of a Canada goose.',
+				'those in search of the perfect placebo',
+				'those that are physically indistinguishable from a normal person but do not experience qualia.',
+				'those who would sacrifice themselves to a utility monster'
+
+			]
+	let shuff_array = shuffleArrayDateSeed(borges_array);
+	console.log(shuff_array);
+	let return_array = [];
+
+	for (i = 0; i < num_names; i++)
+		{
+		return_array.push(shuff_array[i]);
+		}
+	return return_array;
+
+}
+
+function shuffleArrayDateSeed(array) {
+	date = GetDate()
+	for (let i = array.length - 1; i > 0; i--) {
+		let date_hash = cyrb53(date + i);
+		let seed = parseFloat("0." + String(date_hash));
+		const j = Math.floor(seed * (i + 1));
+		[array[i], array[j]] = [array[j], array[i]];
+    }
+	return array;
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[array[i], array[j]] = [array[j], array[i]];
+    }
+	return array;
+}
+
+let in_html = "";
+let url_array = [];
+let borges_names = BorgesNames(3);
+borges_names.forEach((room_name,index)=>{
+	let hash = {}
+	hash["url"] = CreateRoom(room_name);
+	hash["room_name"] = room_name;
+	url_array.push(hash);
+});
+
+let shuffled_urls = shuffleArray(url_array);
+
+for (let i = 0; i < shuffled_urls.length; i++){
+	let url_hash = shuffled_urls[i];
+	let room_name = url_hash["room_name"];
+	let url = url_hash["url"];
+	in_html = in_html + "<p><a target='_blank' href='" + url + "'>A room for " + room_name + "</a>";
+};
+
+document.getElementById("test").innerHTML = in_html;// "Hello JavaScript!";
+//document.cookie = "username=John Doe";
+function CreateRoom(cnt){
+	let today = new Date();
+	date = GetDate()
+	let base_url = "https://meet.jit.si/" + cnt + "_" + date;
+	return base_url;
+}
+</script>
